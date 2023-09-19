@@ -1,0 +1,47 @@
+import numpy as np
+
+
+def input_matrix(prompt, size):
+    while True:
+        try:
+            print(prompt)
+            matrix = []
+            for _ in range(size):
+                row = [int(val) for val in input().split()]
+                if len(row) != size:
+                    raise ValueError
+                matrix.append(row)
+            return np.array(matrix)
+        except ValueError:
+            print("Невірний формат елемента матриці")
+
+
+def input_vector(prompt, size):
+    while True:
+        try:
+            print(prompt)
+            vector = [int(val) for val in input().split()]
+            if len(vector) != size:
+                raise ValueError
+            return np.array(vector)
+        except ValueError:
+            print("Невірний формат елемента вектора")
+
+
+def solve_linear_system(A, B):
+    determinant = np.linalg.det(A)
+    if determinant != 0:
+        X = np.linalg.solve(A, B)
+        return X
+    else:
+        X, _, _, _ = np.linalg.lstsq(A, B, rcond=None)
+        return X
+
+
+if __name__ == "__main__":
+    A = input_matrix("Введіть значення матриці А", 3)
+    B = input_vector("Введіть значення вектора B через пробіл", 3)
+
+    solution = solve_linear_system(A, B)
+
+    print(f"Рішення системи рівнянь: Х = {tuple(solution)}")
