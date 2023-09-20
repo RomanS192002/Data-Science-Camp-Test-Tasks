@@ -1,0 +1,38 @@
+import numpy as np
+import copy
+
+def update_matrix(M):
+    new_M = copy.deepcopy(M)
+    rows, cols = len(M), len(M[0])
+
+    for i in range(rows):
+        for j in range(cols):
+            neighbors_sum = sum(M[(i + x) % rows][(j + y) % cols] for x in [-1, 0, 1] for y in [-1, 0, 1]) - M[i][j]
+
+            if M[i][j] == 1 and (neighbors_sum < 2 or neighbors_sum > 3):
+                new_M[i][j] = 0
+            elif M[i][j] == 0 and neighbors_sum == 3:
+                new_M[i][j] = 1
+
+    return new_M
+
+def simulate_game_of_life(initial_matrix, num_iterations):
+    current_matrix = initial_matrix
+    for _ in range(num_iterations):
+        current_matrix = update_matrix(current_matrix)
+    return current_matrix
+
+initial_matrix = [[1, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 1, 0, 0, 1, 1],
+                  [1, 0, 0, 1, 0, 0, 1],
+                  [0, 1, 1, 0, 1, 1, 0],
+                  [1, 1, 1, 1, 0, 0, 1],
+                  [1, 1, 1, 1, 1, 1, 1],
+                  [1, 1, 0, 1, 1, 1, 1]]
+
+num_iterations = 7
+
+result_matrix = simulate_game_of_life(initial_matrix, num_iterations)
+
+print(f"Matrix after {num_iterations}-th iteration:")
+print(np.array(result_matrix))
