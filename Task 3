@@ -1,0 +1,26 @@
+probabilities = [0.1, 0.2, 0.4, 0.8, 0.9]
+
+num_experiments = 8
+
+results = [1, 1, 1, 0, 1, 0, 1, 1]
+
+def update_probabilities(probabilities, result):
+    updated_probabilities = []
+
+    for p in probabilities:
+        if result == 1:
+            updated_prob = p / (p + (1 - p) * 0.5)
+        else:
+            updated_prob = p / (p + (1 - p) * 0.5)
+        updated_probabilities.append(updated_prob)
+
+    return updated_probabilities
+
+for i in range(num_experiments):
+    result = results[i]
+    probabilities = update_probabilities(probabilities, result)
+    print(f'Випробування {i + 1}: {probabilities}')
+
+print("Остаточні ймовірності:")
+for i, p in enumerate(probabilities, 1):
+    print(f'm{i}: {p}')
